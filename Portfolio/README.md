@@ -17,6 +17,7 @@ This project simulates an event-driven asset management system. The system monit
     - `main.cpp`: The main program.
     - `event.cpp`: Implements functions for event handling.
     - `portfolio.cpp`: Implements functions for portfolio adjustment.
+    - `strategie.cpp`: Implements the investment strategy based on detected events.
 - `include/`: Contains the header files for the project.
     - `event.hpp`: Defines the structures for events and assets.
     - `portfolio.hpp`: Functions related to portfolio management.
