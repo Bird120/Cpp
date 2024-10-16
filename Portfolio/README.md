@@ -20,7 +20,6 @@ This project simulates an event-driven asset management system. The system monit
 - `include/`: Contains the header files for the project.
     - `event.hpp`: Defines the structures for events and assets.
     - `portfolio.hpp`: Functions related to portfolio management.
-- `test/`: Contains unit tests for verifying the functionality of the project components (not yet implemented).
 - `data/`: Placeholder for data files (such as CSV) that will be used for events and assets in future updates (not yet utilized).
 
 ## How to Run
