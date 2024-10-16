@@ -2,7 +2,9 @@
 
 ## Overview
 
-This project simulates an event-driven asset management system. The system monitors specific corporate events (e.g., mergers, earnings reports, dividend announcements) and simulates investment strategies based on these events, adjusting a portfolio accordingly.
+This project simulates an event-driven asset management system. The system monitors specific corporate events (e.g.,
+mergers, earnings reports, dividend announcements) and simulates investment strategies based on these events, adjusting
+a portfolio accordingly.
 
 ## Features
 
@@ -21,20 +23,22 @@ This project simulates an event-driven asset management system. The system monit
 - `include/`: Contains the header files for the project.
     - `event.hpp`: Defines the structures for events and assets.
     - `portfolio.hpp`: Functions related to portfolio management.
-- `data/`: Placeholder for data files (such as CSV) that will be used for events and assets in future updates (not yet utilized).
-
+- `data/`: Placeholder for data files (such as CSV) that will be used for events and assets in future updates (not yet
+  utilized).
+- `images/`: Contains assets like images for documentation purposes.
+    - `output_cpp.png`: Output image of the project.
 
 ## Project Output
 
-Here is the project's output after processing events:
+Here is the project's output:
 
 ![Portfolio Output](./images/output_cpp.png)
-
 
 ## How to Run
 
 1. **Generate Build Files Using CMake:**
-   Open a terminal and navigate to the root of the project directory. Run the following command to create a build directory and generate the necessary files:
+   Open a terminal and navigate to the root of the project directory. Run the following command to create a build
+   directory and generate the necessary files:
 
 ```bash
 mkdir build                    # Create a build directory at the root of the project folder
@@ -55,5 +59,6 @@ make                           # Compile the project
 ```bash
 ./Portfolio                    # Run the compiled executable
 ```
+
 2. **IDE Automation:**
-  For users utilizing IDEs such as CLion, there is no need to manually do  1., as the IDE handles this automatically."
+   For users utilizing IDEs such as CLion, there is no need to manually do 1., as the IDE handles this automatically."
