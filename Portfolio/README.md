@@ -23,6 +23,14 @@ This project simulates an event-driven asset management system. The system monit
     - `portfolio.hpp`: Functions related to portfolio management.
 - `data/`: Placeholder for data files (such as CSV) that will be used for events and assets in future updates (not yet utilized).
 
+
+## Project Output
+
+Here is the project's output after processing events:
+
+![Portfolio Output](./images/output_cpp.png)
+
+
 ## How to Run
 
 1. **Generate Build Files Using CMake:**
