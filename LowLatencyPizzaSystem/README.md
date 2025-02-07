@@ -17,4 +17,10 @@
 ## 🛠️ Installation & Execution
 
 ### 1️⃣ Clone the repository
+```bash
+git clone https://github.com/cpp.git
+cd cpp
+g++ -o restaurant main.cpp -std=c++20 -pthread
+./pizza 0.5 3 2000
+americana L x4; regina M x2;
 
