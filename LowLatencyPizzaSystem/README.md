@@ -33,7 +33,8 @@ americana L x4; regina M x2;
 
 ## 🏗 Project Structure  
 📂 src  
- ├── ❌ Error       # Handles Exception 
+ ├── ❌ Error       # Handles Exception
+ 
  ├── 🔥 Kitchen     # Manages cooking process with threads  
  ├── 🏠 Reception   # Handles Reception  
  ├── 📝 Parser      # Process and check inputs  
