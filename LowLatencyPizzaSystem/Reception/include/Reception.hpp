@@ -18,8 +18,9 @@ private:
     double _multiplier;
     int _nbCooks;
     int _timeStockRecharge;
-    std::vector<Kitchen*> _kitchens;
-
+    //std::vector<Kitchen*> _kitchens;
+    std::vector<std::unique_ptr<Kitchen>> _kitchens;
+    std::vector<pid_t> kitchenPids;
 public:
     Reception(double multiplier, int cooks, int timeStockRecharge);
     ~Reception();
@@ -28,6 +29,8 @@ public:
     void run();
     const std::string getUserInput();
     void checkArguments(char **argv);
+    void createKitchen(const Pizza& pizza, int number);
+
 
 };
 

@@ -44,9 +44,9 @@ while (getline(pizza_stream, order, ';')){
   //create the input in std::cin in order to facilite parsing
   std::istringstream order_stream(order);
   std::string type_pizza, size_pizza, quantity_pizza;
+
   if (!(order_stream >> type_pizza >> size_pizza >> quantity_pizza))
     throw ErrorFormat(std::cerr, "Error Format" + type_pizza);
-  std::cout << type_pizza << "  size pizza" << size_pizza << " " << quantity_pizza << std::endl;
   PizzaType type = convert_to_pizza_type(type_pizza);
   PizzaSize size = convert_to_pizza_size(size_pizza);
   std::size_t num_pizzas = std::stoul(quantity_pizza.substr(1));

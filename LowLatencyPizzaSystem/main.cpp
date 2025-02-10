@@ -5,7 +5,7 @@
  #include "Reception.hpp"
 
 void prompt(){
-      std::cout << "\n> ";
+      std::cout << "> ";
 }
 
 const std::string getUserInput(){
@@ -21,8 +21,10 @@ int execute(char* argv[]){
   Reception* reception = new Reception(std::stod(argv[1]), std::stoi(argv[2]), std::stoi(argv[3]));
   bool keepRunning = true;
   while (keepRunning){
+      prompt();
 	  const std::string line = getUserInput();
           reception->dispatchPizzas(parser->separeCommands(line));
+          break;
   }
   return 0;
 }

@@ -8,14 +8,14 @@
 #include <chrono>
 //#include <condition_variable>
 #include <thread>
-Kitchen::Kitchen(int cooks, int stockRecharge)
-    : maxCooks(cooks * 2),  _stockRecharge(stockRecharge), stopKitchen(false) {
+Kitchen::Kitchen(int cooks, int stockRecharge, int kitchenNumber)
+    : _nbCooks(static_cast<std::size_t>(std::max(0, cooks)) * 2),  _stockRecharge(stockRecharge), stopKitchen(false), kitchenNumber(kitchenNumber) {
     lastTime = std::chrono::steady_clock::now();
 	for (int i = 0; i < cooks * 2; ++i) {
           //Create a cook for each jthread
           _cooks.push_back(std::jthread(&Kitchen::processOrders, this, i));
 	}
-    monitorThread = std::jthread(&Kitchen::monitorInactivity, this);
+    //monitorThread = std::jthread(&Kitchen::monitorInactivity, this);
 }
 
 Kitchen::~Kitchen()
@@ -23,26 +23,6 @@ Kitchen::~Kitchen()
 }
 
 
-// check the kitchen activity, if 5 seconds inactive call method close the kitchen: stopCooking()
-void Kitchen::monitorInactivity() {
-        while (!stopKitchen) {
-            // check ther activity every 1 second
-            std::this_thread::sleep_for(std::chrono::seconds(1));
-
-            // get clock, this clock cannot be modify(constant) even if an intern modification appear
-            //  diff with  system_clock() method can be modify
-            auto now = std::chrono::steady_clock::now();
-            // calculate the interval now -lastTime
-            auto diff = std::chrono::duration_cast<std::chrono::seconds>(now - lastTime).count();
-
-            if (diff >= 30) {
-                // if 5 seconds passed, inform the Reception then close the Kitchen
-                std::cout << "Inactivity detected: no orders for " << diff << " seconds." << std::endl;
-                stopCooking();
-                return;
-            }
-        }
-    }
 
 // add order to the vector of order of type : Pizza
 void Kitchen::addPizza(const Pizza& order) {
@@ -52,7 +32,6 @@ void Kitchen::addPizza(const Pizza& order) {
   {
     //send a order to the queue(FIFO)
   	pizzaQueue.push(order);
-    lastTime = std::chrono::steady_clock::now();
   }
   // send a sign to one only thread from all threads waiting
   condition.notify_one();
@@ -63,22 +42,27 @@ void Kitchen::addPizza(const Pizza& order) {
 //Reception call this method to dispatch correctly the orders
 bool Kitchen::canAcceptPizza() {
 	std::lock_guard<std::mutex> lock(queueMutex);
-	return pizzaQueue.size() < (2 * _nbCooks);
+	//check size vector jthread
+	return  pizzaQueue.size() < (2 * static_cast<std::size_t>(_nbCooks)) ? true : false;
 }
 
 //cooking order, retrieve the right time from the order
 void Kitchen::cookPizza(Pizza &order, int cookId) {
-    std::unique_lock<std::mutex> lock(queueMutex);
-  	std::cout << "Cooker " << cookId <<  " starts : " << order.type << " " << order.size << std::endl;
-	std::this_thread::sleep_for(std::chrono::duration<double, std::milli>(order.getTime()));
-	std::cout << "Cooker " << cookId << " ends : " << order.type << " " << order.size << std::endl;
+  {
+        std::unique_lock<std::mutex> lock(queueMutex);
+        std::cout << "Cooker " << cookId <<  " starts : " << order.type << " " << order.size << std::endl;
+  }
+     std::this_thread::sleep_for(std::chrono::milliseconds(20));
+  {
+        std::unique_lock<std::mutex> lock(queueMutex);
+        std::cout << "Cooker " << cookId << " ends : " << order.type << " " << order.size << std::endl;
+  }
 }
 
 // Action to closed the kitchen
 void Kitchen::stopCooking() {
     {
         std::lock_guard<std::mutex> lock(queueMutex);
-       	std::cout << "Kitchen closed." << std::endl;
         stopKitchen = true;
     }
     // notify cooks that stopKitchen = true
@@ -92,17 +76,16 @@ void Kitchen::processOrders(int cookId) {
             //lock the thread in order to access ressource one threead after the other
             std::unique_lock<std::mutex> lock(queueMutex);
             condition.wait(lock, [this] { return !pizzaQueue.empty() || stopKitchen; });
-
             if (stopKitchen && pizzaQueue.empty()) break;
             order = pizzaQueue.front();
             pizzaQueue.pop();
-            lastTime = std::chrono::steady_clock::now();
 		}
-
-        // call cooking pizza method
-        cookPizza(order, cookId);
-        return;
+            cookPizza(order, cookId);
+            if (pizzaQueue.empty())
+              stopCooking();
     }
+    	std::cout << "Kitchen closed."  << std::endl;
+		return;
 }
 
 

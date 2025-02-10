@@ -17,19 +17,19 @@
 
 class Kitchen {
 private:
-    int maxCooks;
+    std::size_t _nbCooks;
     int _stockRecharge;
     bool stopKitchen = false;
     std::vector<std::jthread> _cooks;
-    std::size_t _nbCooks;
     std::queue<Pizza> pizzaQueue;
     std::mutex queueMutex;
     std::condition_variable condition;
     std::chrono::steady_clock::time_point lastTime;
     std::jthread monitorThread;
+    int kitchenNumber;
 
 public:
-    Kitchen(int cooks, int stockRecharge);
+    Kitchen(int cooks, int stockRecharge, int kitchenNumber);
     ~Kitchen();
     void addPizza(const Pizza& order);
     bool canAcceptPizza();
