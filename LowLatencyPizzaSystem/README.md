@@ -29,7 +29,7 @@ g++-13 -o restaurant main.cpp -std=c++20 -pthread
 ```bash
 ./pizza 0.5 3 2000
 ```
-americana L x4; regina M x2;
+regina M x2;
 
 ## 🏗 Project Structure  
 📂 src  
